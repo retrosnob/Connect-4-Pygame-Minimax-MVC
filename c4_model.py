@@ -5,8 +5,11 @@ from copy import deepcopy
 class C4_Model:
 
     def __init__(self):
-        self.__board = Board()
+        self.reset_game()
         self.__listeners = []
+
+    def reset_game(self):
+        self.__board = Board()
 
     def register_listener(self, listener):
         """Allows other objects to listen to model events.

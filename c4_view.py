@@ -82,6 +82,7 @@ class C4_View:
 
     def draw_game(self):
         # Draw the grid and the pieces (and the winning line if there is one) to the surface and blit it.
+        self.game_surf.fill(BG_COLOR)
         self.__draw_grid()
         self.__draw_pieces()
         if self.model.getstate("WINNING_LINE"):

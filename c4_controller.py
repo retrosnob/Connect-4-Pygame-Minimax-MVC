@@ -21,11 +21,13 @@ class C4_Controller:
             elif event.type == MOUSEBUTTONDOWN:
                 if event.button == 1: # Left mouse button
                     if self.intro_screen:
-                        self.view.draw_game()
                         self.intro_screen = False
+                        self.view.draw_game()
                     else:                            
                         if self.model.getstate("GAME OVER"):
-                            pass # Ignore clicks if game is over.
+                            self.model.reset_game()
+                            self.intro_screen = True
+                            self.view.draw_intro()
                         else:
                             # TODO This doesn't work if both players are cpus.
                             if self.playerishuman(self.model.getcurrentplayer()):
