@@ -100,7 +100,6 @@ class C4_View:
 
     #! The model calls this function when a move is made
     def model_event(self, event):
-        print('model event')
         # Check the event type and then (re-)draw the screen.
         if event.message == "RESULT":
             if self.model.getstate("WINNER"):
