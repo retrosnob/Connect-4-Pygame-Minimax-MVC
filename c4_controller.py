@@ -8,6 +8,7 @@ class C4_Controller:
         self.model = model
         self.view = view
         self.running = True
+        self.intro_screen = True
 
     def process_input(self):
         # Process the pygame event queue.
@@ -19,17 +20,21 @@ class C4_Controller:
                     self.running = False
             elif event.type == MOUSEBUTTONDOWN:
                 if event.button == 1: # Left mouse button
-                    if self.model.getstate("GAME OVER"):
-                        pass # Ignore clicks if game is over.
-                    else:
-                        # TODO This doesn't work if both players are cpus.
-                        if self.playerishuman(self.model.getcurrentplayer()):
-                            # If the click happened on a human's turn, then make the move.
-                            column = self.view.convert_mousepos(event.pos)
-                            self.model.makemove(column)
-                            if not self.playerishuman(self.model.getcurrentplayer()) and not self.model.getstate("GAME OVER"):
-                                # If it's now the CPU's turn, start a thread for Minimax.
-                                threading.Thread(target=self.getcpumove).start()
+                    if self.intro_screen:
+                        self.view.draw_game()
+                        self.intro_screen = False
+                    else:                            
+                        if self.model.getstate("GAME OVER"):
+                            pass # Ignore clicks if game is over.
+                        else:
+                            # TODO This doesn't work if both players are cpus.
+                            if self.playerishuman(self.model.getcurrentplayer()):
+                                # If the click happened on a human's turn, then make the move.
+                                column = self.view.convert_mousepos(event.pos)
+                                self.model.makemove(column)
+                                if not self.playerishuman(self.model.getcurrentplayer()) and not self.model.getstate("GAME OVER"):
+                                    # If it's now the CPU's turn, start a thread for Minimax.
+                                    threading.Thread(target=self.getcpumove).start()
 
     def getcpumove(self):
         # This function runs in its own thread, so that the game is still responsive,

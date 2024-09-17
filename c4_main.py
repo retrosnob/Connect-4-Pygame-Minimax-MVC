@@ -11,7 +11,7 @@ if __name__ == "__main__":
     model = c4_model.C4_Model()
     view = c4_view.C4_View(model)
     controller = c4_controller.C4_Controller(model, view)
-    view.draw()
+    view.draw_intro()
 
     while controller.running:
         controller.process_input()

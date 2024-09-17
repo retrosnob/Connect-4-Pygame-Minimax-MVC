@@ -36,15 +36,11 @@ class C4_View:
         pygame.init()
         pygame.display.set_caption('Connect 4')
         self.screen = pygame.display.set_mode(self.screen_size)
-        self.clock = pygame.time.Clock()
 
         # Create the surface to draw on.
         # We will draw to a surface and then blit it all at once.
         self.game_surf = pygame.Surface(self.screen_size)
         self.game_surf.set_colorkey(TRANSPARENT)
-
-        # Draw the starting position.
-        self.draw()
 
     def __draw_grid(self):
         # Draw the lines. Just requires a little arithmetic.
@@ -84,27 +80,30 @@ class C4_View:
         # Convert the x coordinate of a click to a column number of the grid.
         return pos[0] // (self.pixel_width // 7)
 
-    def draw(self):
+    def draw_game(self):
         # Draw the grid and the pieces (and the winning line if there is one) to the surface and blit it.
         self.__draw_grid()
         self.__draw_pieces()
         if self.model.getstate("WINNING_LINE"):
             self.__draw_winning_line()
-        self.__blit()
-
-    def __blit(self):
-        # Blank the screen and then draw the surface to the screen.
-        self.screen.fill(BG_COLOR)
         self.screen.blit(self.game_surf, (0, 0))
         pygame.display.flip()
-        self.clock.tick(FRAMERATE)
+
+    def draw_intro(self):
+        self.screen.fill(BG_COLOR)
+        font = pygame.font.Font("wheaton capitals.otf", 24)
+        text = font.render('Click to play', True, BLUE)
+        text_rect = text.get_rect(center=(self.pixel_width/2, self.pixel_height/2))
+        self.screen.blit(text, text_rect)
+        pygame.display.flip()
 
     #! The model calls this function when a move is made
     def model_event(self, event):
+        print('model event')
         # Check the event type and then (re-)draw the screen.
         if event.message == "RESULT":
             if self.model.getstate("WINNER"):
                 print(self.model.getstate("WINNER"))
             else:
                 print("Draw")
-        self.draw()    
+        self.draw_game()    
