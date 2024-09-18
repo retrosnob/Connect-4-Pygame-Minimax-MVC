@@ -93,7 +93,7 @@ class C4_View:
     def draw_intro(self):
         self.screen.fill(BG_COLOR)
         font = pygame.font.Font("wheaton capitals.otf", 24)
-        text = font.render('Click to play', True, BLUE)
+        text = font.render('Click to play', True, WHITE)
         text_rect = text.get_rect(center=(self.pixel_width/2, self.pixel_height/2))
         self.screen.blit(text, text_rect)
         pygame.display.flip()
